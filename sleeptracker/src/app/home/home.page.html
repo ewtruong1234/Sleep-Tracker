@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Sleep Tracker
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Introduction section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Welcome to Sleep Tracker</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>This app helps you track your periods of sleep and your daytime sleepiness according to the Stanford Sleepiness Scale.</p>
+      <p>Below, there are 3 main sections of the app. In the first section, you can log your overnight sleep duration.</p>
+      <p>In the second section, you can log your sleepiness during the day. In the third section, you can view a list of the data</p>
+      <p>that you have logged so far. You can also remove some of the recorded data on the list.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Log Overnight Sleep section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Log Overnight Sleep</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Sleep Start Time</ion-label>
+        <ion-datetime displayFormat="HH:mm" [(ngModel)]="sleepStartTime"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Sleep End Time</ion-label>
+        <ion-datetime displayFormat="HH:mm" [(ngModel)]="sleepEndTime"></ion-datetime>
+      </ion-item>
+      <ion-button expand="block" (click)="logOvernightSleep()">Log Sleep</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Log Sleepiness During the Day section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Log Sleepiness During the Day</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Sleepiness Level</ion-label>
+        <ion-select [(ngModel)]="sleepinessLevel">
+          <ion-select-option value="1">1 - Feeling active, vital, alert, or wide awake</ion-select-option>
+          <ion-select-option value="2">2 - Functioning at high levels, but not at peak; able to concentrate</ion-select-option>
+          <ion-select-option value="3">3 - Awake, but relaxed; responsive but not fully alert</ion-select-option>
+          <ion-select-option value="4">4 - Somewhat foggy, let down</ion-select-option>
+          <ion-select-option value="5">5 - Foggy; losing interest in remaining awake; slowed down</ion-select-option>
+          <ion-select-option value="6">6 - Sleepy, woozy, fighting sleep; prefer to lie down</ion-select-option>
+          <ion-select-option value="7">7 - No longer fighting sleep, sleep onset soon; having dream-like thoughts</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Time</ion-label>
+        <ion-datetime displayFormat="YYYY-MM-DD HH:mm" [(ngModel)]="sleepinessTime"></ion-datetime>
+      </ion-item>
+      <ion-button expand="block" (click)="logSleepiness()">Log Sleepiness</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- View Logged Data section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Logged Data</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let pair of loggedData">
+          <ng-container *ngIf="pair[0] == 'Overnight Sleep'">
+            {{ "Type of Report: " + pair[0] + " | Sleep Start Time: " +  pair[1].sleepStart + " | Sleep End Time: " + pair[1].sleepEnd + " | Date: " + pair[1].loggedAt + " | Report ID: " + pair[1].id }}
+          </ng-container>
+          <ng-container *ngIf="pair[0] == 'Sleepiness'">
+            {{ "Type of Report: " + pair[0] + " | Logged Value: " +  pair[1].loggedValue + " | Date: " + pair[1].loggedAt + " | Report ID: " + pair[1].id }}
+          </ng-container>
+          <ion-button slot="end" (click)="removeLoggedData(pair)">Remove</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
